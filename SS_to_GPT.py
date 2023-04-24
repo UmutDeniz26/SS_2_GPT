@@ -7,6 +7,12 @@ from PIL import Image
 import pyperclip
 import webbrowser
 
+#('n')#screenshot to imgbb and imgtotext
+#('m')#skip imgbb
+#('b')#exit
+#('x')#ctrl v all bots
+#('q')#prompt generator
+
 prompt=""
 
 # Get the current time
@@ -33,12 +39,9 @@ while True:
     
     # Get the current key that is pressed
     key_n = keyboard.is_pressed('n')#screenshot to imgbb and imgtotext
-    key_b = keyboard.is_pressed('b')#exit
-
     key_m = keyboard.is_pressed('m')#skip imgbb
-
+    key_b = keyboard.is_pressed('b')#exit
     key_x = keyboard.is_pressed('x')#ctrl v all bots
-
     key_q = keyboard.is_pressed('q')#prompt generator
 
 
@@ -61,7 +64,7 @@ while True:
             screenshot.save('screenshot.png')
 
             #tesseract kullanmayacaksan sil(text to image)
-            #pytesseract.pytesseract.tesseract_cmd = r'C:\Users\umutc\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\umutc\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
             pyautogui.keyDown('capslock')
             pyautogui.keyUp('capslock')
@@ -102,17 +105,6 @@ while True:
             # Take the screenshot and save it as "screenshot.png" in the current directoryvv
             screenshot = pyautogui.screenshot(region=(left, top, width, height))
             screenshot.save('screenshot.png')
-
-            #tesseract kullanmayacaksan sil(text to image)
-            #pytesseract.pytesseract.tesseract_cmd = r'C:\Users\umutc\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
-
-            pyautogui.keyDown('capslock')
-            pyautogui.keyUp('capslock')
-            time.sleep(1.3)
-            pyautogui.keyDown('capslock')
-            pyautogui.keyUp('capslock')
-
-            text = pytesseract.image_to_string(screenshot)
 
 
             if screenshot_index<1:
@@ -214,8 +206,5 @@ while True:
         break
 
 
-# Get the elapsed time
 elapsed_time = datetime.datetime.now().timestamp() * 1000 - start_time
-
-# Print the elapsed time
 print("The elapsed time was", elapsed_time, "seconds.")
