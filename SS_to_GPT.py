@@ -1,8 +1,8 @@
+import os
 import pyautogui
 import datetime
 import keyboard
 import time
-from PIL import Image
 import pyperclip
 import webbrowser
 
@@ -11,22 +11,23 @@ try:
     import pytesseract
 except:
     pytesseract_include=False
+
 #('n')#screenshot to imgbb and imgtotext
 #('m')#skip imgbb
 #('b')#exit
 #('x')#ctrl v all bots
 #('q')#prompt generator
 
-prompt=""
-
 # Get the current time
 start_time = datetime.datetime.now().timestamp() * 1000
+file_path = os.path.dirname(os.path.abspath(__file__))
 
-prompt_elements = []
-prompt_index = 0
+
 index_to_letters=['A','B','C','D','E','F','G','H','I','J']
+prompt=""
+prompt_elements = []
+prompt_index,screenshot_index,cnt,cnt_q = 0,0,0,0
 
-screenshot_index=0
 
 def prompt_generator(text,index,current_prompt):
     global prompt_elements,index_to_letters
@@ -38,20 +39,16 @@ def prompt_generator(text,index,current_prompt):
 
    
 def takeSS(first_pos,second_pos):
- # Calculate the dimensions of the screenshot
+    
     left = min(first_pos[0], second_pos[0])
     top = min(first_pos[1], second_pos[1])
     width = abs(first_pos[0] - second_pos[0])
     height = abs(first_pos[1] - second_pos[1])
-
-    # Take the screenshot and save it as "screenshot.png" in the current directoryvv
+    
     screenshot = pyautogui.screenshot(region=(left, top, width, height))
     return screenshot
 
-cnt=0
-cnt_q=0
-
-while True:
+while 1:
     
     # Get the current key that is pressed
     key_n = keyboard.is_pressed('n')#screenshot to imgbb and imgtotext
@@ -59,7 +56,6 @@ while True:
     key_b = keyboard.is_pressed('b')#exit
     key_x = keyboard.is_pressed('x')#ctrl v all bots
     key_q = keyboard.is_pressed('q')#prompt generator
-
 
     if key_q and pytesseract_include:
         if cnt_q%2==0:
@@ -70,8 +66,7 @@ while True:
             screenshot = takeSS(first_pos,second_pos)
             screenshot.save('screenshot.png')
 
-            #tesseract kullanmayacaksan sil(text to image)
-            #tesseract exe pathini buraya yapistir
+            #change the path
             pytesseract.pytesseract.tesseract_cmd = r'C:\Users\umutc\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
             pyautogui.keyDown('capslock')
@@ -83,19 +78,16 @@ while True:
             text = pytesseract.image_to_string(screenshot)
 
             prompt = prompt_generator(text,prompt_index,prompt)
-            print(prompt)
             pyperclip.copy(prompt)
             prompt_index+=1
+
         cnt_q+=1
         time.sleep(1)
 
-
-    if key_m :
+    elif key_m :
         screenshot_index+=1
-        print(screenshot_index)
-        time.sleep(1)
- 
-    if key_n :
+        
+    elif key_n :
 
         if cnt%2==0:
             first_pos = pyautogui.position()
@@ -110,7 +102,6 @@ while True:
                 
                 time.sleep(1.2)
                 pyautogui.moveTo(950,450)
-
                 pyautogui.leftClick()
 
                 time.sleep(0.8)
@@ -119,7 +110,7 @@ while True:
                 time.sleep(0.8)
 
                 #change the path !!!!!
-                pyperclip.copy(r'C:\Users\umutc\OneDrive\Masaüstü\Coding\screenshot.png')
+                pyperclip.copy(r'{}\screenshot.png'.format(file_path))
                 pyautogui.hotkey("ctrl", "v") 
                 pyautogui.hotkey('enter')
                 time.sleep(1.2)
@@ -132,24 +123,21 @@ while True:
 
                 pyautogui.moveTo(1295,840)
                 pyautogui.leftClick()
-                time.sleep(0.2)
-
+                
             else:
                 webbrowser.open("https://www.imagetotext.info/")
                 
                 time.sleep(1.2)
                 pyautogui.moveTo(750,710)
-
                 pyautogui.leftClick()
 
                 time.sleep(0.8)
                 pyautogui.moveTo(500,595)
                 pyautogui.leftClick()
-                time.sleep(0.8)
+                
 
-
-                #change the path !!!!!
-                pyperclip.copy(r'C:\Users\umutc\OneDrive\Masaüstü\Coding\screenshot.png')
+                #change the path !!!!!nn
+                pyperclip.copy(r'{}\screenshot.png'.format(file_path))
                 pyautogui.hotkey("ctrl", "v") 
                 pyautogui.hotkey('enter')
                 time.sleep(1.2)
@@ -198,10 +186,13 @@ while True:
         time.sleep(0.2)
         pyautogui.hotkey('enter')
         time.sleep(0.2)
+        time.sleep(1)
 
 
     if key_b :
         break
+    
+
 
 
 elapsed_time = datetime.datetime.now().timestamp() * 1000 - start_time
