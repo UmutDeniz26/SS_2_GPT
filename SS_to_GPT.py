@@ -36,6 +36,18 @@ def prompt_generator(text,index,current_prompt):
         current_prompt+="\n{}){}\n".format(index_to_letters[index-1],text)
     return current_prompt
 
+   
+def takeSS(first_pos,second_pos):
+ # Calculate the dimensions of the screenshot
+    left = min(first_pos[0], second_pos[0])
+    top = min(first_pos[1], second_pos[1])
+    width = abs(first_pos[0] - second_pos[0])
+    height = abs(first_pos[1] - second_pos[1])
+
+    # Take the screenshot and save it as "screenshot.png" in the current directoryvv
+    screenshot = pyautogui.screenshot(region=(left, top, width, height))
+    return screenshot
+
 cnt=0
 cnt_q=0
 
@@ -55,19 +67,11 @@ while True:
         elif cnt_q%2==1:
             second_pos = pyautogui.position()
             
-            print(first_pos,second_pos)
-
-            # Calculate the dimensions of the screenshot
-            left = min(first_pos[0], second_pos[0])
-            top = min(first_pos[1], second_pos[1])
-            width = abs(first_pos[0] - second_pos[0])
-            height = abs(first_pos[1] - second_pos[1])
-
-            # Take the screenshot and save it as "screenshot.png" in the current directoryvv
-            screenshot = pyautogui.screenshot(region=(left, top, width, height))
+            screenshot = takeSS(first_pos,second_pos)
             screenshot.save('screenshot.png')
 
             #tesseract kullanmayacaksan sil(text to image)
+            #tesseract exe pathini buraya yapistir
             pytesseract.pytesseract.tesseract_cmd = r'C:\Users\umutc\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
             pyautogui.keyDown('capslock')
@@ -85,31 +89,21 @@ while True:
         cnt_q+=1
         time.sleep(1)
 
+
     if key_m :
         screenshot_index+=1
         print(screenshot_index)
         time.sleep(1)
-        
-        
+ 
     if key_n :
 
         if cnt%2==0:
             first_pos = pyautogui.position()
         elif cnt%2==1:
             second_pos = pyautogui.position()
-            
-            print(first_pos,second_pos)
 
-            # Calculate the dimensions of the screenshot
-            left = min(first_pos[0], second_pos[0])
-            top = min(first_pos[1], second_pos[1])
-            width = abs(first_pos[0] - second_pos[0])
-            height = abs(first_pos[1] - second_pos[1])
-
-            # Take the screenshot and save it as "screenshot.png" in the current directoryvv
-            screenshot = pyautogui.screenshot(region=(left, top, width, height))
+            screenshot = takeSS(first_pos,second_pos)
             screenshot.save('screenshot.png')
-
 
             if screenshot_index<1:
                 webbrowser.open("https://tr.imgbb.com/")
