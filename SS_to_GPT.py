@@ -2,11 +2,15 @@ import pyautogui
 import datetime
 import keyboard
 import time
-import pytesseract
 from PIL import Image
 import pyperclip
 import webbrowser
 
+pytesseract_include=True
+try: 
+    import pytesseract
+except:
+    pytesseract_include=False
 #('n')#screenshot to imgbb and imgtotext
 #('m')#skip imgbb
 #('b')#exit
@@ -45,7 +49,7 @@ while True:
     key_q = keyboard.is_pressed('q')#prompt generator
 
 
-    if key_q:
+    if key_q and pytesseract_include:
         if cnt_q%2==0:
             first_pos = pyautogui.position()
         elif cnt_q%2==1:
