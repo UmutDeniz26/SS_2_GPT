@@ -5,12 +5,8 @@ import keyboard
 import time
 import pyperclip
 import webbrowser
+#import pytesseract
 
-pytesseract_include=True
-try: 
-    import pytesseract
-except:
-    pytesseract_include=False
 
 #('n')#screenshot to imgbb and imgtotext
 #('m')#skip imgbb
@@ -22,13 +18,15 @@ except:
 start_time = datetime.datetime.now().timestamp() * 1000
 file_path = os.path.dirname(os.path.abspath(__file__))
 
+cnt = 0
 
-index_to_letters=['A','B','C','D','E','F','G','H','I','J']
+
+"""
 prompt=""
 prompt_elements = []
-prompt_index,screenshot_index,cnt,cnt_q = 0,0,0,0
-
-
+cnt_q=0
+index_to_letters=['A','B','C','D','E','F','G','H','I','J']
+prompt_index=0
 def prompt_generator(text,index,current_prompt):
     global prompt_elements,index_to_letters
     if index==0:
@@ -36,10 +34,9 @@ def prompt_generator(text,index,current_prompt):
     else:
         current_prompt+="\n{}){}\n".format(index_to_letters[index-1],text)
     return current_prompt
-
+"""
    
-def takeSS(first_pos,second_pos):
-    
+def takeSS(first_pos,second_pos):    
     left = min(first_pos[0], second_pos[0])
     top = min(first_pos[1], second_pos[1])
     width = abs(first_pos[0] - second_pos[0])
@@ -50,13 +47,11 @@ def takeSS(first_pos,second_pos):
 
 while 1:
     
-    # Get the current key that is pressed
-    key_n = keyboard.is_pressed('n')#screenshot to imgbb and imgtotext
-    key_m = keyboard.is_pressed('m')#skip imgbb
+    key_n = keyboard.is_pressed('n')#screenshot to imgtotext, to use this press n two times on different mouse position.
     key_b = keyboard.is_pressed('b')#exit
     key_x = keyboard.is_pressed('x')#ctrl v all bots
-    key_q = keyboard.is_pressed('q')#prompt generator
-
+    
+    """
     if key_q and pytesseract_include:
         if cnt_q%2==0:
             first_pos = pyautogui.position()
@@ -83,12 +78,9 @@ while 1:
 
         cnt_q+=1
         time.sleep(1)
-
-    elif key_m :
-        screenshot_index+=1
+    """
         
-    elif key_n :
-
+    if key_n :
         if cnt%2==0:
             first_pos = pyautogui.position()
         elif cnt%2==1:
@@ -97,58 +89,28 @@ while 1:
             screenshot = takeSS(first_pos,second_pos)
             screenshot.save('screenshot.png')
 
-            if screenshot_index<1:
-                webbrowser.open("https://tr.imgbb.com/")
-                
-                time.sleep(1.2)
-                pyautogui.moveTo(950,450)
-                pyautogui.leftClick()
+            
+            webbrowser.open("https://www.imagetotext.info/")
+            
+            time.sleep(1.2)
+            pyautogui.moveTo(750,710)
+            pyautogui.leftClick()
 
-                time.sleep(0.8)
-                pyautogui.moveTo(500,595)
-                pyautogui.leftClick()
-                time.sleep(0.8)
+            time.sleep(0.8)
+            pyautogui.moveTo(500,595)
+            pyautogui.leftClick()
+            
 
-                #change the path !!!!!
-                pyperclip.copy(r'{}\screenshot.png'.format(file_path))
-                pyautogui.hotkey("ctrl", "v") 
-                pyautogui.hotkey('enter')
-                time.sleep(1.2)
-
-
-                pyautogui.moveTo(950,880)
-                pyautogui.leftClick()
-                time.sleep(1.5)
+            #change the path !!!!!nn
+            pyperclip.copy(r'{}\screenshot.png'.format(file_path))
+            pyautogui.hotkey("ctrl", "v") 
+            pyautogui.hotkey('enter')
+            time.sleep(1.2)
 
 
-                pyautogui.moveTo(1295,840)
-                pyautogui.leftClick()
-                
-            else:
-                webbrowser.open("https://www.imagetotext.info/")
-                
-                time.sleep(1.2)
-                pyautogui.moveTo(750,710)
-                pyautogui.leftClick()
-
-                time.sleep(0.8)
-                pyautogui.moveTo(500,595)
-                pyautogui.leftClick()
-                
-
-                #change the path !!!!!nn
-                pyperclip.copy(r'{}\screenshot.png'.format(file_path))
-                pyautogui.hotkey("ctrl", "v") 
-                pyautogui.hotkey('enter')
-                time.sleep(1.2)
-
-
-                pyautogui.moveTo(800,930)
-                pyautogui.leftClick()
-                
-                
-
-            screenshot_index+=1
+            pyautogui.moveTo(800,930)
+            pyautogui.leftClick()
+        
 
         cnt+=1
         time.sleep(1)
@@ -176,7 +138,7 @@ while 1:
         pyautogui.hotkey('enter')
         time.sleep(0.2)
         
-
+        """
         webbrowser.open("https://www.bing.com/search?form=WSBCPB&showconv=1&q=bing+AI")
         time.sleep(1.5)
 
@@ -186,14 +148,13 @@ while 1:
         time.sleep(0.2)
         pyautogui.hotkey('enter')
         time.sleep(0.2)
+        """
         time.sleep(1)
 
 
     if key_b :
         break
     
-
-
 
 elapsed_time = datetime.datetime.now().timestamp() * 1000 - start_time
 print("The elapsed time was", elapsed_time, "seconds.")
